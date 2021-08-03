@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    job-name: echo
+  name: echo
+  namespace: default
+spec:
+#  suspend: true # 1.21+
+#  ttlSecondsAfterFinished: 100
+  backoffLimit: 4
+  completions: 4
+  parallelism: 2
+  template:
+    spec:
+      containers:
+      - command:
+        - echo
+        - Hellechoo, Job
+        image: registry.cn-beijing.aliyuncs.com/dotbalo/busybox
+        imagePullPolicy: IfNotPresent  #Always
+        name: echo
+        resources: {}
+      restartPolicy: Never
+

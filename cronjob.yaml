@@ -1,0 +1,33 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  labels:
+    run: hello
+  name: hello
+  namespace: default
+spec:
+  concurrencyPolicy: Allow
+  failedJobsHistoryLimit: 1
+  jobTemplate:
+    metadata:
+    spec:
+      template:
+        metadata:
+          labels:
+            run: hello
+        spec:
+          containers:
+          - args:
+            - /bin/sh
+            - -c
+            - date; echo Hello from the Kubernetes cluster
+            image: registry.cn-beijing.aliyuncs.com/dotbalo/busybox
+            imagePullPolicy: IfNotPresent #Always
+            name: hello
+            resources: {}
+          restartPolicy: OnFailure
+          securityContext: {}
+  schedule: '*/1 * * * *'
+  successfulJobsHistoryLimit: 3
+  suspend: false
+
